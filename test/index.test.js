@@ -15,9 +15,6 @@ describe("Database", () => {
     });
 
     it ("should add an item, get it, edit it, get the newly created item, then delete it", async () => {
-        // should connect
-        await database.connect();
-
         // should add an item
         await database.add("test", {hello: "world"});
 
