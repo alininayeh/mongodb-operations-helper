@@ -38,4 +38,23 @@ describe("Database", () => {
         results = await database.get("test", {_id: resultId});
         results.length.should.equal(0);
     });
+
+    it("should handle batch operations", async () => {
+        await database.add("test", {hello: "world-to-be-edited"});
+        await database.add("test", {hello: "world-to-be-edited"});
+        await database.add("test", {hello: "world-to-be-edited"});
+
+        let results = await database.get("test", {hello: /world-to-be-edited/});
+        
+        await database.batchEdit("test", {hello: /world-to-be-edited/}, {hello: "world"});
+
+        results = await database.get("test", {hello: /world/});
+        results.length.should.equal(3);
+        results[0].should.deep.include({hello: "world"});
+
+        await database.batchDelete("test", {hello: "world"});
+
+        results = await database.get("test", {hello: /world/});
+        results.length.should.equal(0);
+    });
 });

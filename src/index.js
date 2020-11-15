@@ -58,6 +58,28 @@ const Database = {
                 resolve(res);
             });
         });
+    },
+
+    async batchEdit(collection, filter, data) {
+        const db = await this.connect();
+
+        return new Promise((resolve, reject) => {
+            db.collection(collection).updateMany(filter, {$set: data}, (err, res) => {
+                if (err) reject(err);
+                resolve(res);
+            });
+        });
+    },
+    
+    async batchDelete(collection, filter) {
+        const db = await this.connect();
+
+        return new Promise((resolve, reject) => {
+            db.collection(collection).deleteMany(filter, (err, res) => {
+                if (err) reject(err);
+                resolve(res);
+            });
+        });
     }
 };
 

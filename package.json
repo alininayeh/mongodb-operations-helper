@@ -1,6 +1,6 @@
 {
   "name": "mongodb-operations-helper",
-  "version": "0.0.91",
+  "version": "0.0.92",
   "description": "Helper for running MongoDB operations in node",
   "main": "src/index.js",
   "directories": {
