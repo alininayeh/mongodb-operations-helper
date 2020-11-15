@@ -35,7 +35,13 @@
  
  // mongoDbOperationsHelper.edit(collection: string, id: string, data: object): Promise
  mongoDbOperationsHelper.edit("cars", "5ed2abb7034d833ae0f280a9", {price: 19999});
+
+ // mongoDbOperationsHelper.batchEdit(collection: string, id: string, data: object): Promise
+ mongoDbOperationsHelper.batchEdit("cars", {price: 20000}, {price: 19999});
  
  // mongoDbOperationsHelper.delete(collection: string, id: string): Promise
  mongoDbOperationsHelper.delete("cars", "5ed2abb7034d833ae0f280a9");
+
+ // mongoDbOperationsHelper.batchDelete(collection: string, id: string): Promise
+ mongoDbOperationsHelper.batchDelete("cars", {price: {$lt: 10000}});
  ```
