@@ -1,6 +1,20 @@
 const { ObjectID } = require("mongodb");
 const MongoClient = require("mongodb").MongoClient;
 
+const createEditData = (data, incrementData) => {
+    const editData = {};
+
+    if (Object.keys(data).length) {
+        editData.$set = data;
+    }
+
+    if (Object.keys(incrementData).length) {
+        editData.$inc = incrementData;
+    }
+
+    return editData;
+};
+
 const Database = {
     dbname: "",
     dbpath: "",
@@ -49,7 +63,7 @@ const Database = {
         const db = await this.connect();
 
         return new Promise((resolve, reject) => {
-            db.collection(collection).updateOne({_id: this.objectId(id)}, {$set: data, $inc: incrementData},  (err, res) => {
+            db.collection(collection).updateOne({_id: this.objectId(id)}, createEditData(data, incrementData),  (err, res) => {
                 if (err) reject(err);
                 resolve(res);
             });
@@ -71,7 +85,7 @@ const Database = {
         const db = await this.connect();
 
         return new Promise((resolve, reject) => {
-            db.collection(collection).updateMany(filter, {$set: data, $inc: incrementData}, (err, res) => {
+            db.collection(collection).updateMany(filter, createEditData(data, incrementData), (err, res) => {
                 if (err) reject(err);
                 resolve(res);
             });
