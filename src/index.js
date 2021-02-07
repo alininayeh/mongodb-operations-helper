@@ -31,18 +31,25 @@ const Database = {
         const db = await this.connect();
 
         return new Promise((resolve, reject) => {
-            db.collection(collection).find(filter).sort(sort).toArray((err, res) => {
-                if (err) reject(err);
-                resolve(res);
-            });
+            if (typeof filter === "string") {
+                db.collection(collection).find({"_id": ObjectID(filter)}).sort(sort).toArray((err, res) => {
+                    if (err) reject(err);
+                    resolve(res);
+                });
+            } else {
+                db.collection(collection).find(filter).sort(sort).toArray((err, res) => {
+                    if (err) reject(err);
+                    resolve(res);
+                });
+            }
         });
     },
 
-    async edit(collection, id, data) {
+    async edit(collection, id, data, incrementData = {}) {
         const db = await this.connect();
 
         return new Promise((resolve, reject) => {
-            db.collection(collection).updateOne({_id: this.objectId(id)}, {$set: data}, (err, res) => {
+            db.collection(collection).updateOne({_id: this.objectId(id)}, {$set: data, $inc: incrementData},  (err, res) => {
                 if (err) reject(err);
                 resolve(res);
             });
@@ -60,11 +67,11 @@ const Database = {
         });
     },
 
-    async batchEdit(collection, filter, data) {
+    async batchEdit(collection, filter, data, incrementData = {}) {
         const db = await this.connect();
 
         return new Promise((resolve, reject) => {
-            db.collection(collection).updateMany(filter, {$set: data}, (err, res) => {
+            db.collection(collection).updateMany(filter, {$set: data, $inc: incrementData}, (err, res) => {
                 if (err) reject(err);
                 resolve(res);
             });
